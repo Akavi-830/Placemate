@@ -12,7 +12,7 @@ import savedRouter from "./routes/saved.routes.js";
 import aiRouter from "./routes/ai.routes.js";
 import adminRouter from "./routes/admin.routes.js";
 
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
 const startServer = async () => {
   try {
@@ -20,28 +20,18 @@ const startServer = async () => {
 
     // Middleware
     app.use(express.json());
-
-    // Request logging middleware
-    app.use((req, res, next) => {
-      console.log(`\n🔔 ${req.method} ${req.path}`);
-      console.log("Headers:", {
-        contentType: req.headers["content-type"],
-        authorization: req.headers.authorization ? "✓" : "✗",
-        contentLength: req.headers["content-length"],
-      });
-      next();
-    });
-
     app.use(
       cors({
         origin: [
           "http://localhost:5173",
           "http://localhost:5174",
-          "http://localhost:5175",
+          "https://placemate-liard.vercel.app",
+          "https://placemate-2k8d.vercel.app",
         ],
         credentials: true,
       }),
     );
+
     app.use("/uploads", express.static("uploads"));
 
     // Routes
